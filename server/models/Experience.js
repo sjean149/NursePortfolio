@@ -2,31 +2,31 @@ const mongoose = require("mongoose");
 
 const experienceSchema = new mongoose.Schema(
   {
-    position: {
+    title: {
       type: String,
       required: true,
+      trim: true,
     },
 
     organization: {
       type: String,
       required: true,
+      trim: true,
     },
 
-    startDate: {
+    dates: {
       type: String,
-    },
-
-    endDate: {
-      type: String,
-      default: "Present",
+      required: true,
+      trim: true,
     },
 
     description: {
       type: String,
-      required: false,
+      required: true,
+      trim: true,
     },
 
-    skills: {
+    responsibilities: {
       type: [String],
       default: [],
     },
@@ -36,4 +36,6 @@ const experienceSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model("Experience", experienceSchema);
+const Experience = mongoose.model("Experience", experienceSchema);
+
+module.exports = Experience;

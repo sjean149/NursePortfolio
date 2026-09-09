@@ -24,7 +24,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/experience", experienceRoutes);
-app.use("/api/education", educationRoutes);
 app.use("/api/contact", contactRoutes);
 
 const PORT = process.env.PORT || 5000;
