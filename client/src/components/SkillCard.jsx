@@ -1,0 +1,13 @@
+function SkillCard({ icon, title, description }) {
+  return (
+    <div className="skill-card">
+      <div className="skill-icon">{icon}</div>
+
+      <h3>{title}</h3>
+
+      <p>{description}</p>
+    </div>
+  );
+}
+
+export default SkillCard;

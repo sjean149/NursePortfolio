@@ -1,10 +1,8 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
 const experienceRoutes = require("./routes/experienceRoutes");
-const educationRoutes = require("./routes/educationRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
@@ -12,10 +10,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
+const pool = require("./config/db");
+
+pool.query("SELECT NOW()", (error, result) => {
+  if (error) {
+    console.error("Database connection failed:", error);
+  } else {
+    console.log("Database connected:", result.rows[0]);
+  }
+});
+
 
 app.get("/", (req, res) => {
   res.json({

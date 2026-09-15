@@ -1,0 +1,32 @@
+.about-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 100px 20px;
+}
+
+.about-text {
+  color: #546e7a;
+}
+
+.about-text p {
+  margin-bottom: 20px;
+}
+
+.nursing-philosophy {
+  background: #f4f8f8;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.nursing-philosophy .section-title {
+  max-width: 700px;
+  margin: auto;
+}
+
+.nursing-philosophy blockquote {
+  max-width: 750px;
+  margin: 30px auto 0;
+  font-size: 25px;
+  font-style: italic;
+  color: #455a64;
+}

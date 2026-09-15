@@ -1,0 +1,65 @@
+.education-section,
+.certifications-section {
+  max-width: 1000px;
+  margin: auto;
+  padding: 100px 20px;
+}
+
+.education-card {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 30px;
+
+  padding: 30px;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+}
+
+.education-year {
+  color: #00897b;
+  font-weight: bold;
+}
+
+.education-card h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.education-card p {
+  color: #607d8b;
+  margin-bottom: 10px;
+}
+
+.certifications-section {
+  max-width: none;
+  background: #f4f8f8;
+  padding-left: max(20px, calc((100% - 1000px) / 2));
+  padding-right: max(20px, calc((100% - 1000px) / 2));
+}
+
+.certifications-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.certification-card {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.certification-card h3 {
+  margin-bottom: 10px;
+}
+
+.certification-card p {
+  color: #607d8b;
+}
+
+.certification-card span {
+  display: block;
+  margin-top: 15px;
+  color: #00897b;
+  font-weight: bold;
+}
