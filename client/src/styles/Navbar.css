@@ -35,11 +35,25 @@
 
 .navbar-links a:hover {
   color: #00897b;
+  padding: 4px;
+  border: 1px dashed#00897b;
+  
+}
+
+.navbar-links a.active {
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  opacity: 1;
+  background-color: #00897b;
+  border-bottom: 2px solid #00897b;
 }
 
 .nav-contact {
   padding: 9px 18px;
   background: #00897b;
+  opacity: 0.5;
   color: white !important;
   border-radius: 5px;
 }
+

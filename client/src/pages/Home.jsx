@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import SkillCard from "../components/SkillCard";
 import SectionTitle from "../components/SectionTitle";
@@ -29,13 +29,13 @@ function Home() {
             </p>
 
             <div className="hero-buttons">
-              <Link to="/experience" className="primary-button">
+              <NavLink to="/experience" className="primary-button">
                 View My Experience
-              </Link>
+              </NavLink>
 
-              <Link to="/contact" className="secondary-button">
+              <NavLink to="/contact" className="secondary-button">
                 Contact Me
-              </Link>
+              </NavLink>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ function Home() {
         <div className="home-section-container">
           <SectionTitle
             label="ABOUT ME"
-            title="Caring for Patients, Supporting People"
+            title="A Career Built Around Patient Care"
           />
 
           <div className="about-preview-content">
@@ -72,9 +72,9 @@ function Home() {
               effective care.
             </p>
 
-            <Link to="/about" className="text-link">
+            <NavLink to="/experience" className="text-link">
               Learn More →
-            </Link>
+            </NavLink>
           </div>
         </div>
       </section>
@@ -117,30 +117,6 @@ function Home() {
         </div>
       </section>
 
-      {/* EXPERIENCE PREVIEW */}
-
-      <section className="experience-preview">
-        <div className="home-section-container">
-          <div className="experience-preview-content">
-            <div>
-              <p className="section-label">PROFESSIONAL EXPERIENCE</p>
-
-              <h2>A Career Built Around Patient Care</h2>
-
-              <p>
-                Explore my professional experience, responsibilities,
-                accomplishments, and continued development as a nursing
-                professional.
-              </p>
-            </div>
-
-            <Link to="/experience" className="primary-button">
-              View Experience
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* CONTACT CTA */}
 
       <section className="home-contact">
@@ -154,9 +130,9 @@ function Home() {
             background.
           </p>
 
-          <Link to="/contact" className="primary-button">
+          <NavLink to="/contact" className="primary-button">
             Contact Me
-          </Link>
+          </NavLink>
         </div>
       </section>
     </main>

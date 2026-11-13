@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { API_URL } from "../config";
 import "../styles/Contact.css";
 
+const emptyForm = {
+  name: "",
+  email: "",
+  message: "",
+};
+
 function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null); // { type: "success" | "error", text }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -17,12 +22,36 @@ function Contact() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setSubmitting(true);
+    setStatus(null);
 
-    console.log(formData);
+    try {
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    alert("Thank you for your message!");
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      setFormData(emptyForm);
+      setStatus({
+        type: "success",
+        text: "Thank you for your message! I'll get back to you soon.",
+      });
+    } catch (err) {
+      console.error("Failed to send message:", err);
+      setStatus({
+        type: "error",
+        text: "Sorry, your message couldn't be sent. Please try again later.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -49,7 +78,7 @@ function Contact() {
           <div className="contact-details">
             <div>
               <strong>Email</strong>
-              <p>nurse@example.com</p>
+              <p>Chanbeauge03@gmail.com</p>
             </div>
 
             <div>
@@ -96,7 +125,15 @@ function Contact() {
             required
           />
 
-          <button type="submit">Send Message</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Sending…" : "Send Message"}
+          </button>
+
+          {status && (
+            <p className={`form-status ${status.type}`} role="status">
+              {status.text}
+            </p>
+          )}
         </form>
       </section>
     </main>

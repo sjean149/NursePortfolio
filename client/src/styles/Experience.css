@@ -42,3 +42,12 @@
   margin-bottom: 8px;
   color: #546e7a;
 }
+
+.experience-status {
+  color: #607d8b;
+  text-align: center;
+}
+
+.experience-error {
+  color: #c62828;
+}

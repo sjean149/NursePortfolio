@@ -65,3 +65,20 @@
 .contact-form button:hover {
   background: #00695c;
 }
+
+.contact-form button:disabled {
+  background: #80cbc4;
+  cursor: not-allowed;
+}
+
+.form-status {
+  margin-top: 10px;
+}
+
+.form-status.success {
+  color: #00695c;
+}
+
+.form-status.error {
+  color: #c62828;
+}

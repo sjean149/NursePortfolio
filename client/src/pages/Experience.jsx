@@ -1,9 +1,44 @@
+import { useEffect, useState } from "react";
+
 import ExperienceCard from "../components/ExperienceCard";
 import SectionTitle from "../components/SectionTitle";
+import { API_URL } from "../config";
 
 import "../styles/Experience.css";
 
 function Experience() {
+  const [experiences, setExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadExperiences = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/experience`, {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        setExperiences(await response.json());
+      } catch (err) {
+        if (err.name === "AbortError") return;
+        console.error("Failed to load experiences:", err);
+        setError("Unable to load experience right now. Please try again later.");
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    loadExperiences();
+
+    return () => controller.abort();
+  }, []);
+
   return (
     <main className="page">
       <section className="page-header">
@@ -20,32 +55,19 @@ function Experience() {
       <section className="experience-page">
         <SectionTitle label="CAREER" title="Professional Experience" />
 
-        <div className="experience-list">
-          <ExperienceCard
-            dates="2024 – Present"
-            title="Registered Nurse"
-            organization="Hospital / Healthcare Organization"
-            description="Providing comprehensive patient care while collaborating with interdisciplinary healthcare teams."
-            responsibilities={[
-              "Provide compassionate, patient-centered care.",
-              "Monitor and document patient conditions.",
-              "Communicate with patients, families, and healthcare professionals.",
-              "Administer medications and treatments according to established protocols.",
-            ]}
-          />
+        {loading && <p className="experience-status">Loading experience…</p>}
 
-          <ExperienceCard
-            dates="2022 – 2024"
-            title="Nursing Position"
-            organization="Healthcare Organization"
-            description="Supported patients through individualized care and effective communication."
-            responsibilities={[
-              "Assisted with patient assessments and care planning.",
-              "Maintained accurate patient documentation.",
-              "Collaborated with members of the healthcare team.",
-            ]}
-          />
-        </div>
+        {error && (
+          <p className="experience-status experience-error">{error}</p>
+        )}
+
+        {!loading && !error && (
+          <div className="experience-list">
+            {experiences.map(({ id, ...experience }) => (
+              <ExperienceCard key={id} {...experience} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
