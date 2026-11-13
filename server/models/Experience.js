@@ -1,41 +1,42 @@
-const mongoose = require("mongoose");
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../config/database");
 
-const experienceSchema = new mongoose.Schema(
+class Experience extends Model {}
+
+Experience.init(
   {
     title: {
-      type: String,
-      required: true,
-      trim: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
 
     organization: {
-      type: String,
-      required: true,
-      trim: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
 
     dates: {
-      type: String,
-      required: true,
-      trim: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
 
     description: {
-      type: String,
-      required: true,
-      trim: true,
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
 
     responsibilities: {
-      type: [String],
-      default: [],
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+      defaultValue: [],
     },
   },
   {
+    sequelize,
+    modelName: "Experience",
+    tableName: "experiences",
     timestamps: true,
   },
 );
-
-const Experience = mongoose.model("Experience", experienceSchema);
 
 module.exports = Experience;

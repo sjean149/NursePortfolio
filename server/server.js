@@ -2,24 +2,20 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const sequelize = require("./config/database");
 const experienceRoutes = require("./routes/experienceRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 const app = express();
 
-app.use(cors());
+// CLIENT_URL can be a comma-separated list of allowed origins.
+// If it is not set, all origins are allowed (handy for local development).
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(",").map((origin) => origin.trim())
+  : null;
+
+app.use(cors(allowedOrigins ? { origin: allowedOrigins } : {}));
 app.use(express.json());
-
-const pool = require("./config/db");
-
-pool.query("SELECT NOW()", (error, result) => {
-  if (error) {
-    console.error("Database connection failed:", error);
-  } else {
-    console.log("Database connected:", result.rows[0]);
-  }
-});
-
 
 app.get("/", (req, res) => {
   res.json({
@@ -27,11 +23,36 @@ app.get("/", (req, res) => {
   });
 });
 
+// Health check used by Render
+app.get("/health", async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.status(200).json({ status: "ok" });
+  } catch (error) {
+    res.status(503).json({ status: "error", message: "Database unavailable" });
+  }
+});
+
 app.use("/api/experience", experienceRoutes);
 app.use("/api/contact", contactRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database connected");
+
+    // Creates tables that don't exist yet; never drops or alters existing ones.
+    await sequelize.sync();
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Unable to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

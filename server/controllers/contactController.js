@@ -1,56 +1,79 @@
 const Contact = require("../models/Contact");
+const transporter = require("../config/mailer");
 
-// CREATE contact message
+// CREATE contact and send email
 const createContact = async (req, res) => {
   try {
-    const contact = new Contact(req.body);
+    const { name, email, message } = req.body;
 
-    const savedContact = await contact.save();
+    // Save contact message to PostgreSQL
+    const contact = await Contact.create({
+      name,
+      email,
+      message,
+    });
+
+    // Send email notification
+    try {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        replyTo: email,
+        subject: `New Portfolio Contact: ${name}`,
+        text: `
+          Name: ${name}
+          Email: ${email}
+
+          Message:
+          ${message}
+        `,
+      });
+    } catch (emailError) {
+      console.error("Email sending failed:", emailError);
+    }
 
     res.status(201).json({
-      message: "Message sent successfully",
-      contact: savedContact,
+      message: "Contact message submitted successfully!",
+      contact,
     });
   } catch (error) {
-    res.status(400).json({
-      message: error.message,
+    console.error("Contact error:", error);
+
+    res.status(500).json({
+      message: "Failed to submit contact message.",
     });
   }
 };
 
-// GET all contact messages
+// GET all contacts
 const getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({
-      createdAt: -1,
-    });
+    const contacts = await Contact.findAll();
 
-    res.json(contacts);
+    res.status(200).json(contacts);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// DELETE contact message
+// DELETE contact
 const deleteContact = async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
+    const contact = await Contact.findByPk(req.params.id);
 
     if (!contact) {
       return res.status(404).json({
-        message: "Contact message not found",
+        message: "Contact not found",
       });
     }
 
-    res.json({
-      message: "Contact message deleted successfully",
+    await contact.destroy();
+
+    res.status(200).json({
+      message: "Contact deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -58,4 +81,4 @@ module.exports = {
   createContact,
   getContacts,
   deleteContact,
-}
+};

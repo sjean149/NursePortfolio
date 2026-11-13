@@ -1,28 +1,21 @@
-const pool = require('../config/db')
+const Experience = require("../models/Experience");
 
+// GET all experiences (most recent first, in the order they were seeded)
 const getExperiences = async (req, res) => {
-  try{
-      const result = await pool.query(`
-        SELECT 
-        id, 
-        position, 
-        organization, 
-        start_date, 
-        end_date, 
-        description  
-        FROM experiences 
-        ORDER BY start_date DESC
-        `)
+  try {
+    const experiences = await Experience.findAll({
+      order: [["id", "ASC"]],
+    });
 
-        res.json(result.rows);
+    res.status(200).json(experiences);
   } catch (error) {
-      console.error("Error fetching the experiences:", error);
-      res.status(500).json({
-        message: "Failed to fetch experiences",
-      });
+    console.error("Error fetching the experiences:", error);
+    res.status(500).json({
+      message: "Failed to fetch experiences",
+    });
   }
-}
+};
 
 module.exports = {
-  getExperiences
+  getExperiences,
 };

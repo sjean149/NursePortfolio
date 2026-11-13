@@ -14,8 +14,7 @@ router.post("/", createContact);
 // GET all contact messages
 router.get("/", getContacts);
 
-// DELETE contact message
-router.delete("/:id", deleteContact);
+
 
 module.exports = router;
 
