@@ -41,7 +41,8 @@ function Experience() {
 
   return (
     <main className="page">
-      <section className="page-header">
+      <section className="page-header experience-section">
+
         <p className="section-label">EXPERIENCE</p>
 
         <h1>Professional Experience</h1>

@@ -8,8 +8,6 @@ import Experience from "./pages/Experience";
 import Education from "./pages/Education";
 import Contact from "./pages/Contact";
 
-import "./styles/global.css";
-
 function App() {
   return (
     <BrowserRouter>

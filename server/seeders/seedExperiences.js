@@ -18,7 +18,7 @@ const experiences = [
   {
     title: "Registered Nurse",
     organization: "Execu-search Healthcare",
-    dates: "",
+    dates: "Jan 2021 – Present",
     description:
       "Vaccination and COVID-19 testing in partnership with the Department of Health.",
     responsibilities: [
